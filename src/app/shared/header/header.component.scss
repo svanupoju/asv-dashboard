@@ -1,0 +1,73 @@
+.asv-logo {
+  height: 2.2rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.15em;
+}
+.logo-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  border-radius: 0.4rem;
+  margin-right: 0.15rem;
+  color: #fff;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  background-clip: padding-box;
+  box-sizing: border-box;
+  /* Remove line-height so letter is centered */
+}
+.logo-a {
+  background: #3699ff;
+}
+.logo-s {
+  background: #ffc700;
+  color: #23263a;
+}
+.logo-v {
+  background: #8950fc;
+}
+.navbar {
+  background: linear-gradient(90deg, #181c32 0%, #23263a 100%) !important;
+  border-bottom: none;
+  box-shadow: 2px 0 12px 0 rgba(24,28,50,0.12);
+  z-index: 1050;
+  min-height: 64px;
+  height: 64px;
+  transition: height 0.2s, min-height 0.2s;
+}
+.sidebar-header-area {
+  height: 64px;
+  min-height: 64px;
+  transition: height 0.2s, min-height 0.2s;
+}
+
+.sidebar-header-area {
+  background: transparent;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.navbar-brand {
+  color: #00e396 !important;
+  letter-spacing: 1px;
+}
+
+.btn-dark {
+  color: #f8f9fa;
+  background: none;
+  border: none;
+}
+
+.btn-dark:focus, .btn-dark:hover {
+  color: #00e396;
+  background: #23263a;
+}
+
+.badge.bg-danger {
+  font-size: 0.7rem;
+}

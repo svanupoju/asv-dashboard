@@ -1,0 +1,62 @@
+// Reduce icon size for compact sidebar
+.sidebar-menu-icon {
+  font-size: 1.05rem;
+  color: #3699ff;
+  min-width: 1.5em;
+  text-align: center;
+  transition: color 0.2s;
+}
+.sidebar-menu .nav-link.active .sidebar-menu-icon,
+.sidebar-menu .nav-link:focus .sidebar-menu-icon,
+.sidebar-menu .nav-link:hover .sidebar-menu-icon {
+  color: #fff;
+}
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
+  background: linear-gradient(180deg, #181c32 0%, #23263a 100%);
+  color: #f8f9fa;
+  box-shadow: none;
+  border-right: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  transition: width 0.2s, min-width 0.2s, max-width 0.2s;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-size: 0.85rem;
+}
+.sidebar.collapsed {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+}
+.sidebar.collapsed .nav-link i {
+  margin-right: 0 !important;
+}
+.sidebar-menu .nav-link {
+  color: #b5b5c3 !important;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  transition: background 0.2s, color 0.2s;
+}
+.sidebar-menu .nav-link.active, .sidebar-menu .nav-link:focus, .sidebar-menu .nav-link:hover {
+  background: #1b233a;
+  color: #fff !important;
+}
+.sidebar-label {
+  letter-spacing: 0.01em;
+}
+.sidebar-header {
+  text-align: center;
+}
+.nav-link.active, .nav-link:hover {
+  background: #23263a;
+  color: #00e396 !important;
+  border-radius: 0.375rem;
+}

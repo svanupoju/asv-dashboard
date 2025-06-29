@@ -1,0 +1,151 @@
+import { Component } from '@angular/core';
+
+interface CustomizationMenu {
+  name: string;
+  key: string;
+  submenus: string[];
+  selected: boolean;
+  selectedSubmenus: string[];
+}
+
+@Component({
+  selector: 'app-customization',
+  templateUrl: './customization.component.html',
+  styleUrls: ['./customization.component.scss']
+})
+export class CustomizationComponent {
+  // Helper to check if a menu is a default menu (cannot be deleted)
+  isDefaultMenu(key: string): boolean {
+    return (
+      key === 'salary-income' ||
+      key === 'technical-support' ||
+      key === 'interview-assistance'
+    );
+  }
+
+  // Delete a menu by index
+  deleteMenu(index: number) {
+    if (!this.isDefaultMenu(this.menus[index].key)) {
+      this.menus.splice(index, 1);
+    }
+  }
+  // Add a new menu to the list
+  addMenu() {
+    const name = this.newMenuName.trim();
+    if (!name) {
+      this.addMenuError = 'Menu name cannot be empty.';
+      return;
+    }
+    if (this.menus.some((m: CustomizationMenu) => m.name.toLowerCase() === name.toLowerCase())) {
+      this.addMenuError = 'Menu already exists.';
+      return;
+    }
+    const key = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    this.menus.push({
+      name,
+      key,
+      submenus: [],
+      selected: true,
+      selectedSubmenus: []
+    });
+    this.newMenuName = '';
+    this.addMenuError = '';
+  }
+  menus: CustomizationMenu[] = [];
+  newMenuName = '';
+  addMenuError = '';
+
+  constructor() {
+    // Load menu selection from localStorage if available
+    const savedMenus = localStorage.getItem('customMenus');
+    const defaultMenus: CustomizationMenu[] = [
+      {
+        name: 'Salary Income',
+        key: 'salary-income',
+        submenus: ['Monthly', 'Yearly', 'Bonuses'],
+        selected: true,
+        selectedSubmenus: ['Monthly', 'Yearly', 'Bonuses']
+      },
+      {
+        name: 'Technical Support',
+        key: 'technical-support',
+        submenus: ['Tickets', 'Live Chat', 'FAQ'],
+        selected: true,
+        selectedSubmenus: ['Tickets', 'Live Chat', 'FAQ']
+      },
+      {
+        name: 'Interview Assistance',
+        key: 'interview-assistance',
+        submenus: ['Mock Interviews', 'Tips', 'Schedule'],
+        selected: true,
+        selectedSubmenus: ['Mock Interviews', 'Tips', 'Schedule']
+      }
+    ];
+    if (savedMenus) {
+      const parsed = JSON.parse(savedMenus);
+      this.menus = defaultMenus.map(menu => {
+        const found = parsed.find((m: any) => m.key === menu.key);
+        return {
+          ...menu,
+          selected: !!found
+        };
+      });
+      // Add any custom menus from storage
+      parsed.forEach((m: any) => {
+        if (!defaultMenus.some(dm => dm.key === m.key)) {
+          this.menus.push({
+            name: m.name,
+            key: m.key,
+            submenus: [],
+            selected: true,
+            selectedSubmenus: []
+          });
+        }
+      });
+    } else {
+      this.menus = defaultMenus;
+    }
+  }
+
+  onMenuToggle(menu: CustomizationMenu) {
+    if (!menu.selected) {
+      menu.selectedSubmenus = [];
+    } else {
+      menu.selectedSubmenus = [...menu.submenus];
+    }
+  }
+
+  // (removed duplicate and misplaced code)
+
+  saveMenus() {
+    // Save both sidebar menu and submenu selections
+    const sidebarMenus = this.menus
+      .filter(m => m.selected)
+      .map(m => ({
+        name: m.name,
+        key: m.key,
+        icon: this.getIcon(m.key),
+        route: '/' + m.key,
+        submenus: m.selectedSubmenus
+      }));
+    localStorage.setItem('customMenus', JSON.stringify(sidebarMenus));
+    localStorage.setItem('customSubmenus', JSON.stringify(
+      this.menus.reduce((acc, m) => {
+        acc[m.key] = m.selectedSubmenus;
+        return acc;
+      }, {} as Record<string, string[]>)
+    ));
+    // Refresh the app to show updated menu
+    window.location.reload();
+  }
+
+  getIcon(key: string): string {
+    switch (key) {
+      case 'dashboard': return 'fas fa-home';
+      case 'salary-income': return 'fas fa-money-bill-wave';
+      case 'technical-support': return 'fas fa-headset';
+      case 'interview-assistance': return 'fas fa-user-tie';
+      default: return 'fas fa-cog';
+    }
+  }
+}

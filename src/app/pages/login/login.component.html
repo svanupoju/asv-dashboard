@@ -1,0 +1,31 @@
+<!-- Restored previous revert code as requested -->
+<div class="login-container d-flex min-vh-100 black-theme animated-bg">
+  <div *ngIf="showLogoutMsg" class="alert alert-success w-100 text-center" style="position:absolute;top:0;left:0;z-index:1000;">
+    You are now Successfully logged out. Please login again to continue. 
+  </div>
+  <div class="login-logo d-flex flex-column justify-content-center align-items-center flex-grow-1 no-bg animate-logo">
+    <span class="asv-logo d-inline-flex align-items-center justify-content-center shadow-lg animated-logo-glow bounce-logo">
+      <span class="logo-letter logo-a bounce-a">A</span>
+      <span class="logo-letter logo-s bounce-s">S</span>
+      <span class="logo-letter logo-v bounce-v">V</span>
+    </span>
+    <div class="dashboard-title text-white mt-3 animate-dashboard-title" style="font-size: 2.2rem; font-weight: 700; letter-spacing: 0.03em; text-shadow: 0 2px 16px #000a;">Dashboard</div>
+  </div>
+  <div class="login-form d-flex flex-column justify-content-center align-items-center flex-grow-1 no-bg animate-form">
+    <form class="form-same-width px-4 py-4 rounded-4 shadow-lg glass-effect login-form-bg" (submit)="onSubmit($event)">
+      <!-- Login header removed as requested -->
+      <div class="mb-3 animate-input" style="animation-delay: 0.2s;">
+        <label for="login-username" class="form-label text-white" style="font-weight: 500;">Username</label>
+        <input type="text" class="form-control dark-input" id="login-username" placeholder="Enter username" [(ngModel)]="username" name="username" autocomplete="username">
+      </div>
+      <div class="mb-3 animate-input" style="animation-delay: 0.4s;">
+        <label for="login-password" class="form-label text-white" style="font-weight: 500;">Password</label>
+        <input type="password" class="form-control dark-input" id="login-password" placeholder="Enter password" [(ngModel)]="password" name="password" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary mb-3 mt-3 animate-button animated-btn-glow btn-same-width" style="animation-delay: 0.6s; font-weight: 600; letter-spacing: 0.02em; position: relative; top: 8px;">Login</button>
+    </form>
+    <div class="d-flex flex-column align-items-center mt-3 animate-google animated-google-glow form-same-width no-bg" style="animation-delay: 0.8s;">
+      <div id="google-signin-btn"></div>
+    </div>
+  </div>
+</div>

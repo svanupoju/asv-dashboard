@@ -1,0 +1,354 @@
+.filter-input-theme::placeholder {
+  color: #b0b3b8 !important;
+  opacity: 1 !important;
+}
+// Add filter form and input dark theme styles to match filter dropdowns
+.filter-form-theme {
+  background: #181a1b;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 12px #000a;
+  margin-bottom: 1.25rem;
+}
+.filter-input-theme {
+  background: #111213 !important;
+  color: #fff !important;
+  border: 1px solid #333 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: none !important;
+}
+.filter-input-theme:focus {
+  background: #181a1b !important;
+  color: #fff !important;
+  border-color: #555 !important;
+  outline: none !important;
+}
+.salary-income .table-responsive {
+  width: 100%;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 12px 0 rgba(24,28,50,0.10);
+  background: transparent;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Scrollable tbody with sticky header */
+.salary-income .table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+.salary-income .table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.salary-income .table tbody {
+  display: block;
+  max-height: 320px;
+  overflow-y: auto;
+  width: 100%;
+}
+.salary-income .table thead, .salary-income .table tfoot {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+.salary-income .table tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Make tbody scrollable and header sticky */
+.salary-income .table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.salary-income .table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #181a2a;
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  vertical-align: middle;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
+}
+.salary-income .table-responsive table {
+  width: 100%;
+  margin-bottom: 0;
+  table-layout: auto;
+}
+.salary-income .table-responsive tbody {
+  display: block;
+  max-height: 260px;
+  overflow-y: auto;
+  width: 100%;
+}
+.salary-income .table-responsive thead,
+.salary-income .table-responsive thead tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+.salary-income .table-responsive tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+/* Remove duplicate .table rules and keep only one with dark theme and layout */
+.salary-income .table {
+  margin-bottom: 0;
+  min-width: 600px;
+  background: #101014;
+  color: #fff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  table-layout: fixed;
+  border: 1px solid #23243a;
+}
+// Professional Table Styling
+.salary-income .table {
+  background: #23243a;
+  color: #fff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.salary-income .table thead th {
+  background: #244a7c;
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  vertical-align: middle;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.salary-income .table-striped tbody tr:nth-of-type(odd) {
+  background-color: #181a2a;
+}
+.salary-income .table-striped tbody tr:nth-of-type(even) {
+  background-color: #101014;
+}
+.salary-income .table tbody td {
+  border: none;
+  vertical-align: middle;
+  font-size: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.salary-income .table tbody tr:hover {
+  background: #23243a;
+  transition: background 0.2s;
+}
+.salary-income .table-responsive {
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.25);
+  background: #181a2a;
+}
+// Table custom styles reverted to default. Remove dark backgrounds and colors.
+// Table custom styles reverted to default. Remove dark backgrounds and colors.
+
+.salary-income {
+  min-height: 100%;
+}
+.stat-card {
+  color: #fff;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px 0 rgba(24,28,50,0.18);
+  overflow: hidden;
+}
+.stat-blue {
+  background: linear-gradient(135deg, #244a7c 0%, #1b3350 100%);
+}
+.stat-yellow {
+  background: linear-gradient(135deg, #bfa800 0%, #7a6a00 100%);
+  color: #fff;
+}
+.stat-purple {
+  background: linear-gradient(135deg, #4e2e8e 0%, #2d1850 100%);
+}
+.stat-red {
+  background: linear-gradient(135deg, #a12d36 0%, #6b1a1f 100%);
+}
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  background: #181c32;
+}
+.stat-icon i {
+  color: #fff !important;
+}
+.stat-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #b5b5c3;
+}
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.stat-change {
+  font-size: 0.9rem;
+}
+// --- Bottom Card Styles ---
+.card-title {
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+// ...existing code...
+.card.h-100 {
+  background: linear-gradient(135deg, #23243a 60%, #244a7c 100%);
+  border: none;
+  border-radius: 1rem;
+}
+
+// Professional Table Styling
+.salary-income .table {
+  background: #23243a;
+  color: #fff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.salary-income .table thead th {
+  background: #244a7c;
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  vertical-align: middle;
+}
+.salary-income .table-striped tbody tr:nth-of-type(odd) {
+  background-color: #23243a;
+}
+.salary-income .table-striped tbody tr:nth-of-type(even) {
+  background-color: #1b3350;
+}
+.salary-income .table tbody td {
+  border: none;
+  vertical-align: middle;
+  font-size: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  color: #e3e6f0;
+}
+
+/* Black theme for filter dropdowns */
+.salary-income .table thead th select.form-select {
+  background: #23243a;
+  color: #fff;
+  border: 1px solid #23243a;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  min-width: 80px;
+  box-shadow: none;
+}
+.salary-income .table thead th select.form-select:focus {
+  border-color: #1bc5bd;
+  outline: none;
+  box-shadow: 0 0 0 2px #1bc5bd44;
+}
+.salary-income .table tbody tr:hover {
+  background: #2d3e5e;
+  transition: background 0.2s;
+}
+.salary-income .table-responsive {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 2px 12px 0 rgba(24,28,50,0.10);
+}
+.card.h-100:hover {
+  box-shadow: 0 6px 24px 0 rgba(36,74,124,0.18);
+  transform: translateY(-2px) scale(1.01);
+}
+.card.h-100::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 5px;
+  background: linear-gradient(90deg, #1bc5bd 0%, #1b8ea6 100%);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  opacity: 0.7;
+}
+.card.h-100 .card-title {
+  color: #1bc5bd;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.25rem;
+}
+.list-group-item {
+  background: rgba(36, 74, 124, 0.18);
+  color: #e3e6f0;
+  border: none;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.1rem;
+  padding-right: 1.1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.2s, color 0.2s;
+}
+.list-group-item:hover {
+  background: rgba(27,197,189,0.18);
+  color: #1bc5bd;
+}
+.badge.bg-success {
+  background: linear-gradient(90deg, #1bc5bd 0%, #1b8ea6 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  padding: 0.4em 1em;
+  box-shadow: 0 1px 4px 0 rgba(27,197,189,0.12);
+}
+.list-group-item {
+  background: rgba(36, 74, 124, 0.12);
+  color: #f8f9fa;
+  border: none;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.list-group-item:last-child {
+  margin-bottom: 0;
+}
+.badge.bg-success {
+  background: linear-gradient(90deg, #1bc5bd 0%, #1b8ea6 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  padding: 0.4em 1em;
+}
+.chart-placeholder {
+  background: #181c32;
+  border-radius: 0.75rem;
+  color: #b5b5c3;
+  font-size: 1.1rem;
+}

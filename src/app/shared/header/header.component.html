@@ -1,0 +1,43 @@
+<header class="navbar navbar-expand-lg navbar-dark bg-dark px-4 py-2 d-flex align-items-center justify-content-between w-100">
+  <div class="d-flex align-items-center sidebar-header-area flex-shrink-0 position-relative"
+    [ngStyle]="sidebarCollapsed ? {'width':'60px','min-width':'60px'} : {'width':'250px','min-width':'250px'}">
+    <div class="d-flex align-items-center w-100 justify-content-between">
+      <span class="asv-logo me-2 d-inline-flex align-items-center justify-content-center" *ngIf="sidebarCollapsed">
+        <span class="logo-letter logo-a">A</span>
+        <span class="logo-letter logo-s">S</span>
+        <span class="logo-letter logo-v">V</span>
+      </span>
+      <span class="asv-logo me-2 d-inline-flex align-items-center justify-content-center" *ngIf="!sidebarCollapsed">
+        <span class="logo-letter logo-a">A</span>
+        <span class="logo-letter logo-s">S</span>
+        <span class="logo-letter logo-v">V</span>
+      </span>
+      <span class="navbar-brand mb-0 h1 fs-3 fw-bold" *ngIf="!sidebarCollapsed">Dashboard</span>
+      <button class="btn btn-dark menu-toggle-btn ms-auto" type="button" (click)="toggleSidebar.emit()">
+        <i *ngIf="!sidebarCollapsed" class="fas fa-bars"></i>
+        <i *ngIf="sidebarCollapsed" class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+  <div class="d-flex align-items-center gap-3">
+    <span *ngIf="userName" class="text-white fw-bold me-3">{{ capitalizeName(userName) }}</span>
+    <button class="btn btn-dark position-relative">
+      <i class="fas fa-bell"></i>
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+    </button>
+    <button class="btn btn-dark">
+      <i class="fas fa-envelope"></i>
+    </button>
+    <div class="dropdown" [class.show]="dropdownOpen">
+      <button class="btn btn-dark dropdown-toggle" type="button" (click)="toggleDropdown()" [attr.aria-expanded]="dropdownOpen">
+        <i class="fas fa-user-circle fa-lg"></i>
+      </button>
+      <ul class="dropdown-menu" [class.show]="dropdownOpen">
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</header>

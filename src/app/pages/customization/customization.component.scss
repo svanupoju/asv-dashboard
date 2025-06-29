@@ -1,0 +1,53 @@
+.card {
+  background: #23263a;
+  border-radius: 1rem;
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 24px 0 rgba(24, 28, 50, 0.18);
+}
+.card-title {
+  font-weight: 600;
+}
+.form-label {
+  color: #b5b5c3;
+  font-weight: 600;
+}
+.form-control,
+.form-select {
+  background: #181c32;
+  color: #fff;
+  border: 1px solid #23263a;
+
+  &::placeholder {
+    color: #b5b5c3;
+    opacity: 1;
+  }
+}
+.form-control:focus,
+.form-select:focus {
+  background: #23263a;
+  color: #fff;
+  border-color: #4e2e8e;
+  box-shadow: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #244a7c 0%, #1b3350 100%);
+  border: none;
+  font-weight: 600;
+}
+.customization h2 {
+  font-weight: 700;
+}
+.form-control,
+.form-select {
+  border-radius: 0.5rem;
+}
+.container {
+  max-width: 600px;
+}
+h2 {
+  color: #244a7c;
+}
+.form-check-label {
+  font-size: 1.1rem;
+}

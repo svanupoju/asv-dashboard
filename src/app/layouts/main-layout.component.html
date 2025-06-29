@@ -1,0 +1,9 @@
+<app-header [sidebarCollapsed]="sidebarCollapsed" (toggleSidebar)="toggleSidebar()"></app-header>
+<div class="d-flex">
+  <app-sidebar [collapsed]="sidebarCollapsed"></app-sidebar>
+  <div class="flex-grow-1 d-flex flex-column min-vh-100 main-content p-0">
+    <div class="flex-grow-1 p-4">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

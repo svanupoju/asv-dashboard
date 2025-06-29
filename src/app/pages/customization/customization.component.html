@@ -1,0 +1,24 @@
+<div class="container py-4">
+  <div class="card p-4">
+    <h2 class="mb-4 card-title">Menu Customization</h2>
+    <form>
+      <div class="mb-3">
+        <div class="menu-list">
+          <div class="form-check mb-2 d-flex align-items-center" *ngFor="let menu of menus; let i = index">
+            <input class="form-check-input me-2" type="checkbox" [(ngModel)]="menu.selected" [name]="menu.key" (change)="onMenuToggle(menu)">
+            <label class="form-check-label fw-bold flex-grow-1">{{ menu.name }}</label>
+            <button type="button" class="btn btn-sm btn-danger ms-2" (click)="deleteMenu(i)" *ngIf="!isDefaultMenu(menu.key)">
+              Delete
+            </button>
+          </div>
+        </div>
+        <div class="input-group mt-3">
+          <input type="text" class="form-control" placeholder="Add new menu" [(ngModel)]="newMenuName" name="newMenuName">
+          <button class="btn btn-outline-secondary" type="button" (click)="addMenu()">Add</button>
+        </div>
+        <div *ngIf="addMenuError" class="text-danger mt-1">{{ addMenuError }}</div>
+      </div>
+      <button class="btn btn-primary mt-3" (click)="saveMenus()">Save Menu Selection</button>
+    </form>
+  </div>
+</div>

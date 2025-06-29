@@ -1,0 +1,14 @@
+/* Enable scroll only for table-responsive in salary-income */
+.salary-income .table-responsive {
+  max-height: 320px;
+  overflow-y: auto;
+  display: block;
+}
+html, body, app-root {
+  overflow: hidden !important;
+  height: 100%;
+}
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
+/* You can add global styles to this file, and also import other style files */
