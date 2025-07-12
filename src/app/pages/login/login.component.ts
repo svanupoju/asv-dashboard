@@ -22,15 +22,15 @@ export class LoginComponent implements AfterViewInit {
 
   handleCredentialResponse(response: any) {
     // Store the original Google credential as the token
-    localStorage.setItem('token', response.credential);
+    sessionStorage.setItem('token', response.credential);
     // Decode the JWT to get the email
     try {
       const payload = JSON.parse(atob(response.credential.split('.')[1]));
       if (payload && payload.email) {
-        localStorage.setItem('email', payload.email);
+        sessionStorage.setItem('email', payload.email);
       }
     } catch (e) {
-      localStorage.removeItem('email');
+      sessionStorage.removeItem('email');
     }
     this.ngZone.run(() => {
       this.router.navigate(['/dashboard']);
@@ -40,8 +40,8 @@ export class LoginComponent implements AfterViewInit {
   onSubmit(event: Event) {
     event.preventDefault();
     // Store the entered username as email and as a dummy token
-    localStorage.setItem('token', this.username);
-    localStorage.setItem('email', this.username);
+    sessionStorage.setItem('token', this.username);
+    sessionStorage.setItem('email', this.username);
     this.router.navigate(['/dashboard']);
   }
 

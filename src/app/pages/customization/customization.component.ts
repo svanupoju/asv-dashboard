@@ -56,8 +56,8 @@ export class CustomizationComponent {
   addMenuError = '';
 
   constructor() {
-    // Load menu selection from localStorage if available
-    const savedMenus = localStorage.getItem('customMenus');
+    // Load menu selection from sessionStorage if available
+    const savedMenus = sessionStorage.getItem('customMenus');
     const defaultMenus: CustomizationMenu[] = [
       {
         name: 'Salary Income',
@@ -128,8 +128,8 @@ export class CustomizationComponent {
         route: '/' + m.key,
         submenus: m.selectedSubmenus
       }));
-    localStorage.setItem('customMenus', JSON.stringify(sidebarMenus));
-    localStorage.setItem('customSubmenus', JSON.stringify(
+    sessionStorage.setItem('customMenus', JSON.stringify(sidebarMenus));
+    sessionStorage.setItem('customSubmenus', JSON.stringify(
       this.menus.reduce((acc, m) => {
         acc[m.key] = m.selectedSubmenus;
         return acc;

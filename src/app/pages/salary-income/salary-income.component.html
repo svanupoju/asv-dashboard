@@ -70,8 +70,8 @@
               <span>Add</span>
             </button>
           </div>
-          <div *ngIf="authChecked && !user" class="alert alert-warning mb-3">Please sign in to add or view your income data.</div>
-          <form *ngIf="showAddRow && user" class="row g-2 mb-3 align-items-end filter-form-theme" (ngSubmit)="addRow()">
+          <div *ngIf="authChecked && !userEmail" class="alert alert-warning mb-3">Please sign in to add or view your income data.</div>
+          <form *ngIf="showAddRow && userEmail" class="row g-2 mb-3 align-items-end filter-form-theme" (ngSubmit)="addRow()">
             <div class="col-auto">
               <input type="number" class="form-control form-control-sm filter-input-theme" placeholder="Year" [(ngModel)]="newRow.year" name="year" required>
             </div>
