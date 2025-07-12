@@ -24,6 +24,7 @@ export class SalaryIncomeComponent {
   firestore;
 
   user: User | null = null;
+  userEmail: string | null = null;
   authChecked = false;
 
   constructor() {
@@ -40,19 +41,24 @@ export class SalaryIncomeComponent {
     this.newRow.monthYear = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}`; // yyyy-mm
 
     // Listen for auth state changes and load rows when user is available
-    onAuthStateChanged(getAuth(), (user) => {
-      this.user = user;
-      this.authChecked = true;
-      if (user) {
-        this.loadRows();
-      }
-    });
+    // onAuthStateChanged(getAuth(), (user) => {
+    //   this.user = user;
+    //   this.authChecked = true;
+    //   if (user) {
+    //     this.loadRows();
+    //   }
+    // });
+    this.userEmail = sessionStorage.getItem('email') || 'null'; // Simulate user retrieval
+    this.authChecked = true;  
+    if (this.userEmail) {
+      this.loadRows();
+    }
   }
 
   async addRow() {
     if (!this.newRow.year || !this.newRow.monthOnly || !this.newRow.salary || !this.newRow.date || !this.newRow.monthYear) return;
     const month = this.newRow.monthOnly + ' ' + this.newRow.year;
-    if (!this.user) return; // Optionally, handle not signed in
+    if (!this.userEmail) return; // Optionally, handle not signed in
     const row = {
       year: this.newRow.year,
       monthOnly: this.newRow.monthOnly,
@@ -60,7 +66,7 @@ export class SalaryIncomeComponent {
       salary: this.newRow.salary,
       date: this.newRow.date,
       monthYear: this.newRow.monthYear,
-      email: this.user.email
+      email: this.userEmail
     };
     await nativeAddDoc(collection(this.firestore, 'salaryRows'), row);
     const now = new Date();
@@ -75,9 +81,11 @@ export class SalaryIncomeComponent {
   }
 
   loadRows() {
-    if (!this.user) return;
+    if (!this.userEmail) return;
     const rowsRef = collection(this.firestore, 'salaryRows');
-    const q = query(rowsRef, where('email', '==', this.user.email), orderBy('date', 'desc'));
+    console.log('Loading rows for user:', this.userEmail);
+    console.log('Firestore collection reference:', rowsRef);
+    const q = query(rowsRef, where('email', '==', this.userEmail), orderBy('date', 'desc'));
     onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       this.incomeTable = data;

@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
   constructor(public router: Router) {}
 
   ngOnInit() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     this.closeDropdown();
     this.router.navigate(['/login'], { queryParams: { logout: '1' } });
   }

@@ -18,7 +18,7 @@ export class SidebarComponent implements OnInit {
   menus: SidebarMenu[] = [];
 
   ngOnInit() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token && token.includes('.')) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
@@ -30,8 +30,8 @@ export class SidebarComponent implements OnInit {
       this.userName = token;
     }
 
-    // Load menu selection from localStorage or use defaults
-    const savedMenus = localStorage.getItem('customMenus');
+    // Load menu selection from sessionStorage or use defaults
+    const savedMenus = sessionStorage.getItem('customMenus');
     let customMenus: SidebarMenu[] = [];
     if (savedMenus) {
       customMenus = JSON.parse(savedMenus);
