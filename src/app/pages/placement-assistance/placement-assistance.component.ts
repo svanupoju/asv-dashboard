@@ -1,16 +1,17 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { getApps, initializeApp } from 'firebase/app';
-import { addDoc, collection, deleteDoc, doc, getFirestore, onSnapshot, orderBy, query, updateDoc, where } from 'firebase/firestore';
+import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, where, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { environment } from '../../../environments/environment';
 import { GlobalPeriodFilterService } from '../../shared/services/global-period-filter.service';
 import { normalizeAppEmail } from '../../shared/utils/email-alias.util';
 
-type TechnicalSupportRow = {
+type PlacementRow = {
   id?: string;
   name: string;
   company: string;
+  package: string;
   charged: string;
   monthOnly: string;
   year: number | string;
@@ -19,11 +20,11 @@ type TechnicalSupportRow = {
 };
 
 @Component({
-  selector: 'app-technical-support',
-  templateUrl: './technical-support.component.html',
-  styleUrls: ['./technical-support.component.scss']
+  selector: 'app-placement-assistance',
+  templateUrl: './placement-assistance.component.html',
+  styleUrls: ['./placement-assistance.component.scss']
 })
-export class TechnicalSupportComponent implements OnDestroy {
+export class PlacementAssistanceComponent implements OnDestroy {
   months: string[] = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -41,14 +42,15 @@ export class TechnicalSupportComponent implements OnDestroy {
   editingRowId: string | null = null;
   savingRowId: string | null = null;
 
-  editRow: TechnicalSupportRow = this.createEmptyEditRow();
+  editRow: PlacementRow = this.createEmptyEditRow();
 
-  supportTable: TechnicalSupportRow[] = [];
-  filteredTable: TechnicalSupportRow[] = [];
+  placementTable: PlacementRow[] = [];
+  filteredTable: PlacementRow[] = [];
 
   newRow: any = {
     name: '',
     company: '',
+    package: '',
     charged: '',
     monthOnly: '',
     year: '',
@@ -58,6 +60,7 @@ export class TechnicalSupportComponent implements OnDestroy {
   filters: any = {
     name: '',
     company: '',
+    package: '',
     charged: '',
     monthOnly: '',
     year: '',
@@ -70,6 +73,7 @@ export class TechnicalSupportComponent implements OnDestroy {
   uniqueOptions: any = {
     name: [],
     company: [],
+    package: [],
     charged: [],
     monthOnly: [],
     year: [],
@@ -104,7 +108,7 @@ export class TechnicalSupportComponent implements OnDestroy {
       if (this.userEmail) {
         this.loadRows();
       } else {
-        this.supportTable = [];
+        this.placementTable = [];
         this.filteredTable = [];
         this.setUniqueOptions();
         this.applyFilters();
@@ -119,27 +123,27 @@ export class TechnicalSupportComponent implements OnDestroy {
   loadRows() {
     if (!this.userEmail) return;
 
-    const rowsRef = collection(this.firestore, 'technicalSupport');
+    const rowsRef = collection(this.firestore, 'placementAssisted');
     const rowsQuery = query(rowsRef, where('email', '==', this.userEmail), orderBy('date', 'desc'));
 
     onSnapshot(
       rowsQuery,
       (snapshot) => {
-        this.supportTable = snapshot.docs.map((item) => ({ id: item.id, ...(item.data() as TechnicalSupportRow) }));
+        this.placementTable = snapshot.docs.map((item) => ({ id: item.id, ...(item.data() as PlacementRow) }));
         this.setUniqueOptions();
         this.applyFilters();
       },
       (error: any) => {
-        console.error('Technical support rows listener error:', error);
-        this.supportTable = [];
+        console.error('Placement rows listener error:', error);
+        this.placementTable = [];
         this.filteredTable = [];
         this.setUniqueOptions();
         this.applyFilters();
 
         if (error?.code === 'permission-denied') {
-          this.rowAddError = 'Permission denied loading technical support rows. Sign in with Firebase Auth and update Firestore rules to allow your account.';
+          this.rowAddError = 'Permission denied loading placement rows. Sign in with Firebase Auth and update Firestore rules to allow your account.';
         } else {
-          this.rowAddError = error?.message ? String(error.message) : 'Failed to load technical support rows.';
+          this.rowAddError = error?.message ? String(error.message) : 'Failed to load placement rows.';
         }
       }
     );
@@ -150,9 +154,10 @@ export class TechnicalSupportComponent implements OnDestroy {
 
     this.syncNewRowDate();
 
-    const row: TechnicalSupportRow = {
+    const row: PlacementRow = {
       name: String(this.newRow.name ?? '').trim(),
       company: String(this.newRow.company ?? '').trim(),
+      package: String(this.newRow.package ?? '').trim(),
       charged: String(this.newRow.charged ?? '').trim(),
       monthOnly: String(this.newRow.monthOnly ?? '').trim(),
       year: Number(this.newRow.year),
@@ -160,7 +165,7 @@ export class TechnicalSupportComponent implements OnDestroy {
       email: this.userEmail
     };
 
-    if (!row.name || !row.company || !row.charged || !row.monthOnly || !row.year || !row.date) {
+    if (!row.name || !row.company || !row.package || !row.charged || !row.monthOnly || !row.year || !row.date) {
       return;
     }
 
@@ -168,26 +173,27 @@ export class TechnicalSupportComponent implements OnDestroy {
     this.rowAddError = null;
 
     try {
-      await addDoc(collection(this.firestore, 'technicalSupport'), row);
+      await addDoc(collection(this.firestore, 'placementAssisted'), row);
 
       const now = new Date();
       this.newRow = {
         name: '',
         company: '',
+        package: '',
         charged: '',
         monthOnly: this.months[now.getMonth()],
         year: now.getFullYear(),
         date: this.computeLastWorkingDayIso(now.getFullYear(), now.getMonth())
       };
     } catch (error: any) {
-      console.error('Failed to add technical support row:', error);
-      this.rowAddError = error?.message ? String(error.message) : 'Failed to add technical support row.';
+      console.error('Failed to add placement row:', error);
+      this.rowAddError = error?.message ? String(error.message) : 'Failed to add placement row.';
     } finally {
       this.rowAddInProgress = false;
     }
   }
 
-  async deleteRow(row: TechnicalSupportRow) {
+  async deleteRow(row: PlacementRow) {
     const rowId = String(row?.id ?? '');
     if (!rowId) return;
 
@@ -195,16 +201,16 @@ export class TechnicalSupportComponent implements OnDestroy {
     this.rowAddError = null;
 
     try {
-      await deleteDoc(doc(this.firestore, 'technicalSupport', rowId));
+      await deleteDoc(doc(this.firestore, 'placementAssisted', rowId));
     } catch (error: any) {
-      console.error('Failed to delete technical support row:', error);
-      this.rowAddError = error?.message ? String(error.message) : 'Failed to delete technical support row.';
+      console.error('Failed to delete placement row:', error);
+      this.rowAddError = error?.message ? String(error.message) : 'Failed to delete placement row.';
     } finally {
       this.deletingRowId = null;
     }
   }
 
-  startEditRow(row: TechnicalSupportRow) {
+  startEditRow(row: PlacementRow) {
     const rowId = String(row?.id ?? '');
     if (!rowId) return;
 
@@ -214,6 +220,7 @@ export class TechnicalSupportComponent implements OnDestroy {
       id: rowId,
       name: String(row?.name ?? ''),
       company: String(row?.company ?? ''),
+      package: String(row?.package ?? ''),
       charged: String(row?.charged ?? ''),
       monthOnly: String(row?.monthOnly ?? ''),
       year: Number(row?.year ?? ''),
@@ -244,6 +251,7 @@ export class TechnicalSupportComponent implements OnDestroy {
     const updatedRow = {
       name: String(this.editRow.name ?? '').trim(),
       company: String(this.editRow.company ?? '').trim(),
+      package: String(this.editRow.package ?? '').trim(),
       charged: String(this.editRow.charged ?? '').trim(),
       monthOnly: String(this.editRow.monthOnly ?? '').trim(),
       year: Number(this.editRow.year),
@@ -251,7 +259,7 @@ export class TechnicalSupportComponent implements OnDestroy {
       email: this.userEmail
     };
 
-    if (!updatedRow.name || !updatedRow.company || !updatedRow.charged || !updatedRow.monthOnly || !updatedRow.year || !updatedRow.date) {
+    if (!updatedRow.name || !updatedRow.company || !updatedRow.package || !updatedRow.charged || !updatedRow.monthOnly || !updatedRow.year || !updatedRow.date) {
       return;
     }
 
@@ -259,21 +267,22 @@ export class TechnicalSupportComponent implements OnDestroy {
     this.rowAddError = null;
 
     try {
-      await updateDoc(doc(this.firestore, 'technicalSupport', rowId), updatedRow);
+      await updateDoc(doc(this.firestore, 'placementAssisted', rowId), updatedRow);
       this.cancelEditRow();
     } catch (error: any) {
-      console.error('Failed to update technical support row:', error);
-      this.rowAddError = error?.message ? String(error.message) : 'Failed to update technical support row.';
+      console.error('Failed to update placement row:', error);
+      this.rowAddError = error?.message ? String(error.message) : 'Failed to update placement row.';
     } finally {
       this.savingRowId = null;
     }
   }
 
   setUniqueOptions() {
-    const unique = (key: string) => Array.from(new Set(this.globallyFilteredSupportRows.map((row: any) => row?.[key])));
+    const unique = (key: string) => Array.from(new Set(this.globallyFilteredPlacementRows.map((row: any) => row?.[key])));
 
     this.uniqueOptions.name = unique('name').sort((a, b) => String(a).localeCompare(String(b)));
     this.uniqueOptions.company = unique('company').sort((a, b) => String(a).localeCompare(String(b)));
+    this.uniqueOptions.package = unique('package').sort((a, b) => this.parseMoney(b) - this.parseMoney(a));
     this.uniqueOptions.charged = unique('charged').sort((a, b) => this.parseMoney(b) - this.parseMoney(a));
     this.uniqueOptions.monthOnly = unique('monthOnly').sort((a, b) => this.months.indexOf(String(a)) - this.months.indexOf(String(b)));
     this.uniqueOptions.year = unique('year').sort((a, b) => Number(b) - Number(a));
@@ -281,32 +290,6 @@ export class TechnicalSupportComponent implements OnDestroy {
   }
 
   onNewRowPeriodChange() {
-    this.syncNewRowDate();
-  }
-
-  onNewRowNameChange() {
-    const selectedName = String(this.newRow.name ?? '').trim();
-    if (!selectedName) return;
-
-    const matchingRows = (this.supportTable ?? []).filter(
-      (row) => String(row?.name ?? '').trim() === selectedName
-    );
-
-    if (!matchingRows.length) return;
-
-    const latestRow = [...matchingRows].sort((left, right) => String(right?.date ?? '').localeCompare(String(left?.date ?? '')))[0];
-    if (latestRow?.company) {
-      this.newRow.company = String(latestRow.company);
-    }
-
-    const mostRepeatedCharged = this.getMostRepeatedCharged(matchingRows);
-    if (mostRepeatedCharged) {
-      this.newRow.charged = mostRepeatedCharged;
-    }
-
-    const now = new Date();
-    this.newRow.monthOnly = this.months[now.getMonth()];
-    this.newRow.year = now.getFullYear();
     this.syncNewRowDate();
   }
 
@@ -334,46 +317,18 @@ export class TechnicalSupportComponent implements OnDestroy {
     this.editRow.date = this.computeLastWorkingDayIso(year, monthIndex);
   }
 
-  private createEmptyEditRow(): TechnicalSupportRow {
+  private createEmptyEditRow(): PlacementRow {
     return {
       id: '',
       name: '',
       company: '',
+      package: '',
       charged: '',
       monthOnly: '',
       year: '',
       date: '',
       email: ''
     };
-  }
-
-  private getMostRepeatedCharged(rows: TechnicalSupportRow[]): string {
-    const counts = new Map<string, { count: number; amount: number }>();
-
-    for (const row of rows) {
-      const charged = String(row?.charged ?? '').trim();
-      if (!charged) continue;
-
-      const current = counts.get(charged);
-      counts.set(charged, {
-        count: (current?.count ?? 0) + 1,
-        amount: this.parseMoney(charged)
-      });
-    }
-
-    let bestCharged = '';
-    let bestCount = -1;
-    let bestAmount = -Infinity;
-
-    for (const [charged, info] of counts.entries()) {
-      if (info.count > bestCount || (info.count === bestCount && info.amount > bestAmount)) {
-        bestCharged = charged;
-        bestCount = info.count;
-        bestAmount = info.amount;
-      }
-    }
-
-    return bestCharged;
   }
 
   private computeLastWorkingDayIso(year: number, monthIndex: number): string {
@@ -389,47 +344,12 @@ export class TechnicalSupportComponent implements OnDestroy {
     return `${yyyy}-${mm}-${dd}`;
   }
 
-  private getMonthKeyForRow(row: TechnicalSupportRow): string {
-    const year = Number(row?.year ?? NaN);
-    const monthIndex = this.months.findIndex((month) => month === row?.monthOnly);
-
-    if (Number.isFinite(year) && monthIndex >= 0) {
-      return `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
-    }
-
-    const dateStr = String(row?.date ?? '').trim();
-    return dateStr ? dateStr.slice(0, 7) : '';
-  }
-
-  private getAverageDistinctCountPerMonth(field: 'name' | 'company'): number {
-    const monthlyValues = new Map<string, Set<string>>();
-
-    for (const row of this.globallyFilteredSupportRows) {
-      const monthKey = this.getMonthKeyForRow(row);
-      const value = String(row?.[field] ?? '').trim();
-
-      if (!monthKey || !value) continue;
-
-      let values = monthlyValues.get(monthKey);
-      if (!values) {
-        values = new Set<string>();
-        monthlyValues.set(monthKey, values);
-      }
-
-      values.add(value);
-    }
-
-    if (!monthlyValues.size) return 0;
-
-    const totalDistinctAcrossMonths = [...monthlyValues.values()].reduce((sum, values) => sum + values.size, 0);
-    return totalDistinctAcrossMonths / monthlyValues.size;
-  }
-
   applyFilters() {
-    this.filteredTable = this.globallyFilteredSupportRows.filter((row: any) => {
+    this.filteredTable = this.globallyFilteredPlacementRows.filter((row: any) => {
       return (
         (this.filters.name === '' || String(row.name ?? '') === String(this.filters.name)) &&
         (this.filters.company === '' || String(row.company ?? '') === String(this.filters.company)) &&
+        (this.filters.package === '' || String(row.package ?? '') === String(this.filters.package)) &&
         (this.filters.charged === '' || String(row.charged ?? '') === String(this.filters.charged)) &&
         (this.filters.monthOnly === '' || String(row.monthOnly ?? '') === String(this.filters.monthOnly)) &&
         (this.filters.year === '' || String(row.year ?? '') === String(this.filters.year)) &&
@@ -466,6 +386,7 @@ export class TechnicalSupportComponent implements OnDestroy {
           aValue = String(a?.[column] ?? '').toLowerCase();
           bValue = String(b?.[column] ?? '').toLowerCase();
           break;
+        case 'package':
         case 'charged':
           aValue = this.parseMoney(a?.[column]);
           bValue = this.parseMoney(b?.[column]);
@@ -525,21 +446,17 @@ export class TechnicalSupportComponent implements OnDestroy {
     }
   }
 
-  get totalSupportEntries(): number {
-    return new Set(this.globallyFilteredSupportRows.map((row) => String(row?.name ?? '').trim()).filter(Boolean)).size;
-  }
-
-  get totalCharged(): number {
-    return this.globallyFilteredSupportRows.reduce((sum, row) => sum + this.parseMoney(row?.charged), 0);
+  get totalCandidates(): number {
+    return this.globallyFilteredPlacementRows.length;
   }
 
   get totalCompanies(): number {
-    return new Set(this.globallyFilteredSupportRows.map((row) => String(row?.company ?? '').trim()).filter(Boolean)).size;
+    return new Set(this.globallyFilteredPlacementRows.map((row) => String(row?.company ?? '').trim()).filter(Boolean)).size;
   }
 
   get totalMonths(): number {
     return new Set(
-      this.globallyFilteredSupportRows
+      this.globallyFilteredPlacementRows
         .map((row) => {
           const year = Number(row?.year ?? NaN);
           const monthIndex = this.months.findIndex((month) => month === row?.monthOnly);
@@ -550,64 +467,69 @@ export class TechnicalSupportComponent implements OnDestroy {
     ).size;
   }
 
-  get averagePersonsPerMonth(): number {
-    return this.getAverageDistinctCountPerMonth('name');
+  get averagePlacementsPerMonth(): number {
+    return this.totalMonths > 0 ? this.totalCandidates / this.totalMonths : 0;
+  }
+
+  get totalCharged(): number {
+    return this.globallyFilteredPlacementRows.reduce((sum, row) => sum + this.parseMoney(row?.charged), 0);
   }
 
   get averageChargedPerMonth(): number {
     return this.totalMonths > 0 ? this.totalCharged / this.totalMonths : 0;
   }
 
-  get averageChargedPerPerson(): number {
-    return this.totalSupportEntries > 0 ? this.totalCharged / this.totalSupportEntries : 0;
+  get averageChargedPerPlacement(): number {
+    return this.totalCandidates > 0 ? this.totalCharged / this.totalCandidates : 0;
   }
 
-  get averageCompaniesPerMonth(): number {
-    return this.getAverageDistinctCountPerMonth('company');
+  get highestPackage(): number {
+    return this.globallyFilteredPlacementRows.reduce((max, row) => Math.max(max, this.parseMoney(row?.package)), 0);
   }
 
-  get filteredTotalMonths(): number {
-    return new Set(
-      (this.filteredTable ?? [])
-        .map((row) => {
-          const year = Number(row?.year ?? NaN);
-          const monthIndex = this.months.findIndex((month) => month === row?.monthOnly);
-          if (!Number.isFinite(year) || monthIndex < 0) return '';
-          return `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
-        })
-        .filter(Boolean)
-    ).size;
-  }
-
-  get filteredTotalCharged(): number {
-    return (this.filteredTable ?? []).reduce((sum, row) => sum + this.parseMoney(row?.charged), 0);
+  get averagePackage(): number {
+    return this.totalCandidates > 0
+      ? this.globallyFilteredPlacementRows.reduce((sum, row) => sum + this.parseMoney(row?.package), 0) / this.totalCandidates
+      : 0;
   }
 
   get latestMonthCount(): number {
-    if (!this.globallyFilteredSupportRows.length) return 0;
-    const latestDate = [...this.globallyFilteredSupportRows]
+    if (!this.globallyFilteredPlacementRows.length) return 0;
+    const latestDate = [...this.globallyFilteredPlacementRows]
       .map((row) => String(row.date ?? ''))
       .sort((a, b) => b.localeCompare(a))[0];
 
-    return this.globallyFilteredSupportRows.filter((row) => String(row.date ?? '').slice(0, 7) === latestDate.slice(0, 7)).length;
+    return this.globallyFilteredPlacementRows.filter((row) => String(row.date ?? '').slice(0, 7) === latestDate.slice(0, 7)).length;
   }
 
-  get latestMonth(): number {
-    if (!this.globallyFilteredSupportRows.length) return 0;
+  get latestMonthCharged(): number {
+    if (!this.globallyFilteredPlacementRows.length) return 0;
 
-    const latestDate = [...this.globallyFilteredSupportRows]
+    const latestDate = [...this.globallyFilteredPlacementRows]
       .map((row) => String(row.date ?? ''))
       .sort((a, b) => b.localeCompare(a))[0];
 
-    return this.globallyFilteredSupportRows.reduce((sum, row) => {
+    return this.globallyFilteredPlacementRows.reduce((sum, row) => {
       return String(row?.date ?? '').slice(0, 7) === latestDate.slice(0, 7)
         ? sum + this.parseMoney(row?.charged)
         : sum;
     }, 0);
   }
 
-  private get globallyFilteredSupportRows(): TechnicalSupportRow[] {
-    return (this.supportTable ?? []).filter((row) => this.matchesGlobalMonthKey(this.getMonthKeyForRow(row)));
+  private get globallyFilteredPlacementRows(): PlacementRow[] {
+    return (this.placementTable ?? []).filter((row) => this.matchesGlobalMonthKey(this.getMonthKeyForRow(row)));
+  }
+
+  private getMonthKeyForRow(row: PlacementRow): string {
+    const year = Number(row?.year ?? NaN);
+    const monthIndex = this.months.findIndex((month) => month === row?.monthOnly);
+
+    if (Number.isFinite(year) && monthIndex >= 0) {
+      return `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+    }
+
+    const dateStr = String(row?.date ?? '').trim();
+    return dateStr ? dateStr.slice(0, 7) : '';
   }
 
   private matchesGlobalMonthKey(key: string): boolean {
@@ -657,6 +579,6 @@ export class TechnicalSupportComponent implements OnDestroy {
   }
 
   get latestMonthAverageCharged(): number {
-    return this.latestMonthCount > 0 ? this.latestMonth / this.latestMonthCount : 0;
+    return this.latestMonthCount > 0 ? this.latestMonthCharged / this.latestMonthCount : 0;
   }
 }

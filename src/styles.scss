@@ -4,9 +4,17 @@
   overflow-y: auto;
   display: block;
 }
-html, body, app-root {
-  overflow: hidden !important;
+
+/* Allow the app/page to scroll normally */
+html, body {
   height: 100%;
+}
+body {
+  overflow-y: auto;
+}
+app-root {
+  display: block;
+  min-height: 100%;
 }
 
 @import "../node_modules/bootstrap/scss/bootstrap";

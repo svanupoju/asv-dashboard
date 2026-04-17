@@ -8,6 +8,12 @@
   border-radius: 1rem;
   box-shadow: 0 4px 24px 0 rgba(24,28,50,0.18);
   overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.stat-card:hover {
+  box-shadow: 0 8px 28px 0 rgba(24,28,50,0.24);
+  transform: translateY(-2px) scale(1.01);
 }
 .stat-blue {
   background: linear-gradient(135deg, #244a7c 0%, #1b3350 100%);

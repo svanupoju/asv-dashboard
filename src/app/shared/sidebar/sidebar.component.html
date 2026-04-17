@@ -1,8 +1,8 @@
-<nav class="sidebar bg-dark text-white vh-100 p-3 pt-4" [class.collapsed]="collapsed">
+<nav class="sidebar bg-dark text-white p-3 pt-4" [class.collapsed]="collapsed">
   <!-- Side Menu Header (styled like Permissions label in Settings) -->
   <ul class="nav flex-column sidebar-menu">
     <li class="nav-item mb-2" *ngFor="let menu of menus">
-      <a class="nav-link d-flex align-items-center justify-content-between" [routerLink]="menu.route" routerLinkActive="active">
+      <a class="nav-link d-flex align-items-center justify-content-between" [routerLink]="menu.route" routerLinkActive="active" (click)="onMenuSelect()">
         <span class="d-flex align-items-center">
           <i class="sidebar-menu-icon me-2" [ngClass]="menu.icon"></i>
           <span class="sidebar-label" *ngIf="!collapsed">{{ menu.name }}</span>

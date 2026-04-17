@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 interface SidebarMenu {
   name: string;
@@ -14,8 +14,17 @@ interface SidebarMenu {
 })
 export class SidebarComponent implements OnInit {
   @Input() collapsed = false;
+  @Output() menuSelected = new EventEmitter<void>();
   userName: string | null = null;
   menus: SidebarMenu[] = [];
+
+  private readonly defaultMenus: SidebarMenu[] = [
+    { name: 'Salary Income', key: 'salary-income', icon: 'fas fa-money-bill-wave', route: '/salary-income' },
+    { name: 'Technical Support', key: 'technical-support', icon: 'fas fa-headset', route: '/technical-support' },
+    { name: 'Placement Assistance', key: 'placement-assistance', icon: 'fas fa-user-tie', route: '/placement-assistance' },
+    { name: 'Bike Tracking', key: 'bike-tracking', icon: 'fas fa-motorcycle', route: '/bike-tracking' },
+    { name: 'Car Tracking', key: 'car-tracking', icon: 'fas fa-car-side', route: '/car-tracking' },
+  ];
 
   ngOnInit() {
     const token = sessionStorage.getItem('token');
@@ -34,25 +43,26 @@ export class SidebarComponent implements OnInit {
     const savedMenus = sessionStorage.getItem('customMenus');
     let customMenus: SidebarMenu[] = [];
     if (savedMenus) {
-      customMenus = JSON.parse(savedMenus);
+      const parsedMenus = JSON.parse(savedMenus) as SidebarMenu[];
+      const missingDefaultMenus = this.defaultMenus.filter(
+        defaultMenu => !parsedMenus.some(menu => menu.key === defaultMenu.key)
+      );
+      customMenus = [...parsedMenus, ...missingDefaultMenus];
     } else {
-      customMenus = [
-        { name: 'Salary Income', key: 'salary-income', icon: 'fas fa-money-bill-wave', route: '/salary-income' },
-        { name: 'Technical Support', key: 'technical-support', icon: 'fas fa-headset', route: '/technical-support' },
-        { name: 'Interview Assistance', key: 'interview-assistance', icon: 'fas fa-user-tie', route: '/interview-assistance' },
-        { name: 'Instructors', key: 'instructors', icon: 'fas fa-chalkboard-teacher', route: '/instructors' },
-        { name: 'Settings', key: 'settings', icon: 'fas fa-cog', route: '/settings' }
-      ];
+      customMenus = this.defaultMenus;
     }
     // Always include Dashboard at the start and Customization at the end
     this.menus = [
       { name: 'Dashboard', key: 'dashboard', icon: 'fas fa-home', route: '/dashboard' },
       ...customMenus.filter(m => m.key !== 'dashboard' && m.key !== 'customization'),
-      { name: 'Customization', key: 'customization', icon: 'fas fa-sliders-h', route: '/customization' }
     ];
   }
 
   capitalizeName(name: string): string {
     return name.replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  onMenuSelect(): void {
+    this.menuSelected.emit();
   }
 }

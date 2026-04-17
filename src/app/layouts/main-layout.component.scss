@@ -1,6 +1,84 @@
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.layout-shell {
+  height: 100vh;
+  overflow: hidden;
+  background: #181c32;
+}
+
+app-header.layout-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
+  display: block;
+  height: 64px;
+  overflow: visible;
+}
+
+app-sidebar.layout-sidebar {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  bottom: 0;
+  z-index: 1040;
+  display: block;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
 .main-content {
   background: #181c32;
-  min-height: 100vh;
-  height: auto;
-  /* Remove overflow: auto to prevent scroll when not needed */
+  margin-top: 64px;
+  margin-left: 250px;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  transition: margin-left 0.2s ease;
+}
+
+.main-content.sidebar-collapsed {
+  margin-left: 60px;
+}
+
+.main-content-scroll {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1.5rem;
+}
+
+@media (max-width: 991.98px) {
+  app-header.layout-header {
+    height: auto;
+    min-height: 64px;
+  }
+
+  .main-content {
+    margin-left: 60px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  app-sidebar.layout-sidebar {
+    box-shadow: 18px 0 34px rgba(4, 8, 18, 0.32);
+  }
+
+  app-sidebar.layout-sidebar.sidebar-collapsed {
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .main-content,
+  .main-content.sidebar-collapsed {
+    margin-left: 0;
+  }
+
+  .main-content-scroll {
+    padding: 1rem;
+  }
 }

@@ -12,11 +12,13 @@ import { MainLayoutComponent } from './layouts/main-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { TechnicalSupportComponent } from './pages/technical-support/technical-support.component';
 import { SalaryIncomeComponent } from './pages/salary-income/salary-income.component';
-import { InterviewAssistanceComponent } from './pages/interview-assistance/interview-assistance.component';
+import { PlacementAssistanceComponent } from './pages/placement-assistance/placement-assistance.component';
 import { InstructorsComponent } from './pages/instructors/instructors.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { CustomizationComponent } from './pages/customization/customization.component';
 import { LoginComponent } from './pages/login/login.component';
+import { BikeTrackingComponent } from './pages/bike-tracking/bike-tracking.component';
+import { CarTrackingComponent } from './pages/car-tracking/car-tracking.component';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
@@ -31,11 +33,13 @@ import { environment } from '../environments/environment';
     DashboardComponent,
     TechnicalSupportComponent,
     SalaryIncomeComponent,
-    InterviewAssistanceComponent,
+    PlacementAssistanceComponent,
     LoginComponent,
     InstructorsComponent,
     SettingsComponent,
-    CustomizationComponent
+    CustomizationComponent,
+    BikeTrackingComponent,
+    CarTrackingComponent
   ],
   imports: [
     BrowserModule,

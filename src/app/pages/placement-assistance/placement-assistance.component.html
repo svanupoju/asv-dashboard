@@ -1,12 +1,12 @@
-<div class="technical-support dashboard">
+<div class="placement-assistance dashboard">
   <div class="row mb-4">
     <div class="col-12 col-md-3 mb-3">
       <div class="card stat-card stat-blue stat-hover-card">
         <div class="card-body d-flex align-items-center stat-card-body stat-card-body-breakdown">
-          <div class="stat-icon text-white me-3"><i class="fas fa-headset"></i></div>
+          <div class="stat-icon text-white me-3"><i class="fas fa-user-tie"></i></div>
           <div class="stat-primary-copy">
-            <div class="stat-label">Total Persons</div>
-            <div class="stat-value">{{ totalSupportEntries }}</div>
+            <div class="stat-label">Total Placements</div>
+            <div class="stat-value">{{ totalCandidates }}</div>
           </div>
           <div class="stat-hover-breakdown" aria-hidden="true">
             <div class="stat-hover-breakdown-row">
@@ -19,10 +19,10 @@
             </div>
             <div class="stat-hover-breakdown-row">
               <span class="stat-hover-breakdown-label">Avg / Month</span>
-              <span class="stat-hover-breakdown-value">{{ averagePersonsPerMonth | number:'1.0-1' }}</span>
+              <span class="stat-hover-breakdown-value">{{ averagePlacementsPerMonth | number:'1.0-1' }}</span>
             </div>
             <div class="stat-hover-breakdown-row">
-              <span class="stat-hover-breakdown-label">Current</span>
+              <span class="stat-hover-breakdown-label">Latest</span>
               <span class="stat-hover-breakdown-value">{{ latestMonthCount }}</span>
             </div>
           </div>
@@ -32,7 +32,7 @@
     <div class="col-12 col-md-3 mb-3">
       <div class="card stat-card stat-yellow stat-hover-card">
         <div class="card-body d-flex align-items-center stat-card-body stat-card-body-breakdown">
-          <div class="stat-icon text-white me-3"><i class="fas fa-indian-rupee-sign"></i></div>
+          <div class="stat-icon text-white me-3"><i class="fas fa-clipboard-check"></i></div>
           <div class="stat-primary-copy">
             <div class="stat-label">Total Charged</div>
             <div class="stat-value">{{ formatCurrency(totalCharged) }}</div>
@@ -43,12 +43,12 @@
               <span class="stat-hover-breakdown-value">{{ formatCurrency(averageChargedPerMonth) }}</span>
             </div>
             <div class="stat-hover-breakdown-row">
-              <span class="stat-hover-breakdown-label">Per Person</span>
-              <span class="stat-hover-breakdown-value">{{ formatCurrency(averageChargedPerPerson) }}</span>
+              <span class="stat-hover-breakdown-label">Per Placement</span>
+              <span class="stat-hover-breakdown-value">{{ formatCurrency(averageChargedPerPlacement) }}</span>
             </div>
             <div class="stat-hover-breakdown-row">
               <span class="stat-hover-breakdown-label">Latest Month</span>
-              <span class="stat-hover-breakdown-value">{{ formatCurrency(latestMonth) }}</span>
+              <span class="stat-hover-breakdown-value">{{ formatCurrency(latestMonthCharged) }}</span>
             </div>
             <div class="stat-hover-breakdown-row">
               <span class="stat-hover-breakdown-label">Months</span>
@@ -61,27 +61,27 @@
     <div class="col-12 col-md-3 mb-3">
       <div class="card stat-card stat-purple stat-hover-card">
         <div class="card-body d-flex align-items-center stat-card-body stat-card-body-breakdown">
-          <div class="stat-icon text-white me-3"><i class="fas fa-building"></i></div>
+          <div class="stat-icon text-white me-3"><i class="fas fa-user-check"></i></div>
           <div class="stat-primary-copy">
-            <div class="stat-label">Companies</div>
-            <div class="stat-value">{{ totalCompanies }}</div>
+            <div class="stat-label">Highest Package</div>
+            <div class="stat-value">{{ formatCurrency(highestPackage) }}</div>
           </div>
           <div class="stat-hover-breakdown" aria-hidden="true">
             <div class="stat-hover-breakdown-row">
-              <span class="stat-hover-breakdown-label">Persons</span>
-              <span class="stat-hover-breakdown-value">{{ totalSupportEntries }}</span>
+              <span class="stat-hover-breakdown-label">Avg Package</span>
+              <span class="stat-hover-breakdown-value">{{ formatCurrency(averagePackage) }}</span>
+            </div>
+            <div class="stat-hover-breakdown-row">
+              <span class="stat-hover-breakdown-label">Charged</span>
+              <span class="stat-hover-breakdown-value">{{ formatCurrency(totalCharged) }}</span>
+            </div>
+            <div class="stat-hover-breakdown-row">
+              <span class="stat-hover-breakdown-label">Companies</span>
+              <span class="stat-hover-breakdown-value">{{ totalCompanies }}</span>
             </div>
             <div class="stat-hover-breakdown-row">
               <span class="stat-hover-breakdown-label">Months</span>
               <span class="stat-hover-breakdown-value">{{ totalMonths }}</span>
-            </div>
-            <div class="stat-hover-breakdown-row">
-              <span class="stat-hover-breakdown-label">Avg / Month</span>
-              <span class="stat-hover-breakdown-value">{{ averageCompaniesPerMonth | number:'1.0-1' }}</span>
-            </div>
-            <div class="stat-hover-breakdown-row">
-              <span class="stat-hover-breakdown-label">Latest</span>
-              <span class="stat-hover-breakdown-value">{{ latestMonthCount }}</span>
             </div>
           </div>
         </div>
@@ -90,22 +90,22 @@
     <div class="col-12 col-md-3 mb-3">
       <div class="card stat-card stat-red stat-hover-card">
         <div class="card-body d-flex align-items-center stat-card-body stat-card-body-breakdown">
-          <div class="stat-icon text-white me-3"><i class="fas fa-calendar-check"></i></div>
+          <div class="stat-icon text-white me-3"><i class="fas fa-times-circle"></i></div>
           <div class="stat-primary-copy">
             <div class="stat-label">Latest Month</div>
-            <div class="stat-value">{{ latestMonthCount }} - {{ formatCurrency(latestMonth) }}</div>
+            <div class="stat-value">{{ latestMonthCount }}</div>
           </div>
           <div class="stat-hover-breakdown" aria-hidden="true">
             <div class="stat-hover-breakdown-row">
-              <span class="stat-hover-breakdown-label">Persons</span>
+              <span class="stat-hover-breakdown-label">Placements</span>
               <span class="stat-hover-breakdown-value">{{ latestMonthCount }}</span>
             </div>
             <div class="stat-hover-breakdown-row">
               <span class="stat-hover-breakdown-label">Charged</span>
-              <span class="stat-hover-breakdown-value">{{ formatCurrency(latestMonth) }}</span>
+              <span class="stat-hover-breakdown-value">{{ formatCurrency(latestMonthCharged) }}</span>
             </div>
             <div class="stat-hover-breakdown-row">
-              <span class="stat-hover-breakdown-label">Avg / Person</span>
+              <span class="stat-hover-breakdown-label">Avg / Placement</span>
               <span class="stat-hover-breakdown-value">{{ formatCurrency(latestMonthAverageCharged) }}</span>
             </div>
             <div class="stat-hover-breakdown-row">
@@ -123,27 +123,17 @@
         <div class="card-body">
           <div class="d-flex align-items-center mb-4 justify-content-between">
             <div class="d-flex align-items-center">
-              <h5 class="card-title mb-0">Technical Support Overview</h5>
-              <button class="btn btn-link btn-sm ms-2 p-0 technical-support-toggle-icon-btn" (click)="showAddRow = !showAddRow" [attr.aria-expanded]="showAddRow" aria-label="Toggle Add Row Form">
+              <h5 class="card-title mb-0">Placement Overview</h5>
+              <button class="btn btn-link btn-sm ms-2 p-0 placement-toggle-icon-btn" (click)="showAddRow = !showAddRow" [attr.aria-expanded]="showAddRow" aria-label="Toggle Add Row Form">
                 <i class="fas" [ngClass]="showAddRow ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
               </button>
-              <div class="technical-support-inline-stats">
-                <span class="technical-support-inline-item">
-                  <span class="technical-support-inline-label">Total Months:</span>
-                  <span class="technical-support-inline-value">{{ filteredTotalMonths }}</span>
-                </span>
-                <span class="technical-support-inline-item">
-                  <span class="technical-support-inline-label">Total Charged:</span>
-                  <span class="technical-support-inline-value">{{ formatCurrency(filteredTotalCharged) }}</span>
-                </span>
-              </div>
             </div>
             <button
               *ngIf="showAddRow && userEmail"
               class="btn btn-success btn-sm d-flex align-items-center"
               (click)="addRow(); $event.stopPropagation();"
               type="button"
-              [disabled]="rowAddInProgress || !newRow.name || !newRow.company || !newRow.charged || !newRow.monthOnly || !newRow.year || !newRow.date"
+              [disabled]="rowAddInProgress || !newRow.name || !newRow.company || !newRow.package || !newRow.charged || !newRow.monthOnly || !newRow.year || !newRow.date"
             >
               <span>{{ rowAddInProgress ? 'Adding...' : 'Add' }}</span>
             </button>
@@ -153,22 +143,13 @@
 
           <form *ngIf="showAddRow && userEmail" class="row g-2 mb-3 align-items-end filter-form-theme" (ngSubmit)="addRow()">
             <div class="col-auto">
-              <input
-                type="text"
-                class="form-control form-control-sm filter-input-theme"
-                placeholder="Select or type name"
-                [(ngModel)]="newRow.name"
-                (change)="onNewRowNameChange()"
-                name="name"
-                list="technical-support-name-options"
-                required
-              >
-              <datalist id="technical-support-name-options">
-                <option *ngFor="let name of uniqueOptions.name" [value]="name"></option>
-              </datalist>
+              <input type="text" class="form-control form-control-sm filter-input-theme" placeholder="Name" [(ngModel)]="newRow.name" name="name" required>
             </div>
             <div class="col-auto">
               <input type="text" class="form-control form-control-sm filter-input-theme" placeholder="Company" [(ngModel)]="newRow.company" name="company" required>
+            </div>
+            <div class="col-auto">
+              <input type="text" class="form-control form-control-sm filter-input-theme" placeholder="Package" [(ngModel)]="newRow.package" name="package" required>
             </div>
             <div class="col-auto">
               <input type="text" class="form-control form-control-sm filter-input-theme" placeholder="Charged" [(ngModel)]="newRow.charged" name="charged" required>
@@ -178,16 +159,16 @@
                 <option *ngFor="let m of months" [value]="m">{{ m }}</option>
               </select>
             </div>
-            <div class="col-auto technical-support-year-field">
+            <div class="col-auto placement-year-field">
               <input type="number" class="form-control form-control-sm filter-input-theme" placeholder="Year" [(ngModel)]="newRow.year" (ngModelChange)="onNewRowPeriodChange()" name="year" required>
             </div>
             <div class="col-auto">
-              <input type="date" class="form-control form-control-sm filter-input-theme" [(ngModel)]="newRow.date" name="date" readonly required>
+              <input #dateInput type="date" class="form-control form-control-sm filter-input-theme" [(ngModel)]="newRow.date" name="date" readonly required>
             </div>
           </form>
 
-          <div class="table-responsive mb-3 technical-support-table-scroll">
-            <table class="table table-striped table-dark technical-support-table">
+          <div class="table-responsive mb-3 placement-table-scroll">
+            <table class="table table-striped table-dark placement-table">
               <thead>
                 <tr>
                   <th>
@@ -212,6 +193,18 @@
                     <select class="form-select form-select-sm mt-1" [(ngModel)]="filters.company" (change)="applyFilters()">
                       <option value="">All</option>
                       <option *ngFor="let company of uniqueOptions.company" [value]="company">{{ company }}</option>
+                    </select>
+                  </th>
+                  <th class="amount-column">
+                    <div class="d-flex align-items-center">
+                      Package
+                      <button class="btn btn-link btn-sm p-0 ms-1" (click)="sortTable('package')" [attr.aria-label]="getSortLabel('package')">
+                        <i class="fas" [ngClass]="getSortIcon('package')"></i>
+                      </button>
+                    </div>
+                    <select class="form-select form-select-sm mt-1" [(ngModel)]="filters.package" (change)="applyFilters()">
+                      <option value="">All</option>
+                      <option *ngFor="let packageValue of uniqueOptions.package" [value]="packageValue">{{ formatCurrency(packageValue) }}</option>
                     </select>
                   </th>
                   <th class="amount-column">
@@ -280,6 +273,12 @@
                     <ng-template #viewCompany>{{ row.company }}</ng-template>
                   </td>
                   <td class="amount-column">
+                    <ng-container *ngIf="editingRowId === row.id; else viewPackage">
+                      <input type="text" class="form-control form-control-sm filter-input-theme inline-edit-input" [(ngModel)]="editRow.package" [ngModelOptions]="{ standalone: true }">
+                    </ng-container>
+                    <ng-template #viewPackage>{{ formatCurrency(row.package) }}</ng-template>
+                  </td>
+                  <td class="amount-column">
                     <ng-container *ngIf="editingRowId === row.id; else viewCharged">
                       <input type="text" class="form-control form-control-sm filter-input-theme inline-edit-input" [(ngModel)]="editRow.charged" [ngModelOptions]="{ standalone: true }">
                     </ng-container>
@@ -312,7 +311,7 @@
                           class="btn btn-outline-success btn-sm border-0"
                           type="button"
                           (click)="saveEditRow()"
-                          [disabled]="savingRowId === row.id || !editRow.name || !editRow.company || !editRow.charged || !editRow.monthOnly || !editRow.year || !editRow.date"
+                          [disabled]="savingRowId === row.id || !editRow.name || !editRow.company || !editRow.package || !editRow.charged || !editRow.monthOnly || !editRow.year || !editRow.date"
                           aria-label="Save"
                           title="Save"
                         >
