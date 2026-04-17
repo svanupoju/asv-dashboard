@@ -5,6 +5,7 @@ import { addDoc, collection, deleteDoc, doc, getFirestore, onSnapshot, query, se
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { environment } from '../../../environments/environment';
 import { GlobalPeriodFilterService } from '../../shared/services/global-period-filter.service';
+import { normalizeAppEmail } from '../../shared/utils/email-alias.util';
 
 type VehicleDocumentType = 'insurance' | 'pollution' | 'drivingLicense' | 'rc';
 
@@ -161,7 +162,7 @@ export class CarTrackingComponent implements OnDestroy {
     onAuthStateChanged(getAuth(), (user) => {
       this.user = user;
       this.authChecked = true;
-      this.userEmail = user?.email ?? sessionStorage.getItem('email') ?? null;
+      this.userEmail = normalizeAppEmail(user?.email) ?? normalizeAppEmail(sessionStorage.getItem('email')) ?? null;
 
       this.vehiclesUnsubscribe?.();
       this.entriesUnsubscribe?.();

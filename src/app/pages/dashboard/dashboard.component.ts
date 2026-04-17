@@ -5,6 +5,7 @@ import { addDoc, collection, deleteDoc, doc, getFirestore, onSnapshot, query, up
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { environment } from '../../../environments/environment';
 import { GlobalPeriodFilterService } from '../../shared/services/global-period-filter.service';
+import { normalizeAppEmail } from '../../shared/utils/email-alias.util';
 
 type SalaryDashboardRow = {
   id?: string;
@@ -328,12 +329,12 @@ export class DashboardComponent implements OnDestroy {
 
     onAuthStateChanged(getAuth(), (user) => {
       this.user = user;
-      const persistedEmail = sessionStorage.getItem('email');
-      this.userEmail = user?.email ?? persistedEmail ?? null;
+      const persistedEmail = normalizeAppEmail(sessionStorage.getItem('email'));
+      this.userEmail = normalizeAppEmail(user?.email) ?? persistedEmail ?? null;
       this.authChecked = true;
 
-      if (user?.email) {
-        sessionStorage.setItem('email', user.email);
+      if (this.userEmail) {
+        sessionStorage.setItem('email', this.userEmail);
       }
 
       this.clearSubscriptions();

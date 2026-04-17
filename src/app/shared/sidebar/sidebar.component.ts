@@ -24,8 +24,6 @@ export class SidebarComponent implements OnInit {
     { name: 'Placement Assistance', key: 'placement-assistance', icon: 'fas fa-user-tie', route: '/placement-assistance' },
     { name: 'Bike Tracking', key: 'bike-tracking', icon: 'fas fa-motorcycle', route: '/bike-tracking' },
     { name: 'Car Tracking', key: 'car-tracking', icon: 'fas fa-car-side', route: '/car-tracking' },
-    { name: 'Instructors', key: 'instructors', icon: 'fas fa-chalkboard-teacher', route: '/instructors' },
-    { name: 'Settings', key: 'settings', icon: 'fas fa-cog', route: '/settings' }
   ];
 
   ngOnInit() {
@@ -57,7 +55,6 @@ export class SidebarComponent implements OnInit {
     this.menus = [
       { name: 'Dashboard', key: 'dashboard', icon: 'fas fa-home', route: '/dashboard' },
       ...customMenus.filter(m => m.key !== 'dashboard' && m.key !== 'customization'),
-      { name: 'Customization', key: 'customization', icon: 'fas fa-sliders-h', route: '/customization' }
     ];
   }
 

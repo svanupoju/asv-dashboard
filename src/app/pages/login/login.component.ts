@@ -9,6 +9,7 @@ import {
   signInWithPopup
 } from 'firebase/auth';
 import { environment } from '../../../environments/environment';
+import { normalizeAppEmail } from '../../shared/utils/email-alias.util';
 
 @Component({
   selector: 'app-login',
@@ -53,7 +54,7 @@ export class LoginComponent {
       }
 
       const user = auth.currentUser;
-      const email = user?.email;
+      const email = normalizeAppEmail(user?.email);
       if (!user || !email) throw new Error('Firebase Auth did not return a user/email.');
 
       const idToken = await user.getIdToken();

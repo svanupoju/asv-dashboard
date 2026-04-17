@@ -5,6 +5,7 @@ import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, where, de
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { environment } from '../../../environments/environment';
 import { GlobalPeriodFilterService } from '../../shared/services/global-period-filter.service';
+import { normalizeAppEmail } from '../../shared/utils/email-alias.util';
 
 type PlacementRow = {
   id?: string;
@@ -102,7 +103,7 @@ export class PlacementAssistanceComponent implements OnDestroy {
     onAuthStateChanged(getAuth(), (user) => {
       this.user = user;
       this.authChecked = true;
-      this.userEmail = user?.email ?? null;
+      this.userEmail = normalizeAppEmail(user?.email);
 
       if (this.userEmail) {
         this.loadRows();

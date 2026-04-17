@@ -5,6 +5,7 @@ import { addDoc, collection, deleteDoc, doc, getFirestore, onSnapshot, orderBy, 
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { environment } from '../../../environments/environment';
 import { GlobalPeriodFilterService } from '../../shared/services/global-period-filter.service';
+import { normalizeAppEmail } from '../../shared/utils/email-alias.util';
 
 type TechnicalSupportRow = {
   id?: string;
@@ -98,7 +99,7 @@ export class TechnicalSupportComponent implements OnDestroy {
     onAuthStateChanged(getAuth(), (user) => {
       this.user = user;
       this.authChecked = true;
-      this.userEmail = user?.email ?? null;
+      this.userEmail = normalizeAppEmail(user?.email);
 
       if (this.userEmail) {
         this.loadRows();

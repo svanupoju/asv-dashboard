@@ -5,8 +5,14 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.email != null;
     }
 
+    function normalizedEmail(email) {
+      return email == 'saivamsi715@gmail.com'
+        ? 'saivamsi.anupoju@gmail.com'
+        : email;
+    }
+
     function emailMatches(data) {
-      return isSignedIn() && data.email == request.auth.token.email;
+      return isSignedIn() && normalizedEmail(data.email) == normalizedEmail(request.auth.token.email);
     }
 
     function requestEmailMatches() {
