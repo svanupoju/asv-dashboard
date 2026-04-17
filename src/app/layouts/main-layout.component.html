@@ -1,9 +1,10 @@
-<app-header [sidebarCollapsed]="sidebarCollapsed" (toggleSidebar)="toggleSidebar()"></app-header>
-<div class="d-flex">
-  <app-sidebar [collapsed]="sidebarCollapsed"></app-sidebar>
-  <div class="flex-grow-1 d-flex flex-column min-vh-100 main-content p-0">
-    <div class="flex-grow-1 p-4">
+<div class="layout-shell">
+  <app-header #layoutHeader class="layout-header" [sidebarCollapsed]="sidebarCollapsed" (toggleSidebar)="toggleSidebar()"></app-header>
+  <app-sidebar class="layout-sidebar" [style.top.px]="headerOffset" [class.sidebar-collapsed]="sidebarCollapsed" [collapsed]="sidebarCollapsed" (menuSelected)="onSidebarMenuSelected()"></app-sidebar>
+
+  <main class="main-content" [style.marginTop.px]="headerOffset" [style.height]="'calc(100vh - ' + headerOffset + 'px)'" [class.sidebar-collapsed]="sidebarCollapsed">
+    <div class="main-content-scroll">
       <router-outlet></router-outlet>
     </div>
-  </div>
+  </main>
 </div>

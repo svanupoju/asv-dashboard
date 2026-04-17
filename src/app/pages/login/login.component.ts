@@ -1,16 +1,25 @@
-import { Component, NgZone, AfterViewInit } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { getApps, initializeApp } from 'firebase/app';
+import {
+  browserLocalPersistence,
+  getAuth,
+  GoogleAuthProvider,
+  setPersistence,
+  signInWithPopup
+} from 'firebase/auth';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements AfterViewInit {
-  username = '';
-  password = '';
-  googleClientId = '';
+export class LoginComponent {
   showLogoutMsg = false;
+
+  googleSigningIn = false;
+  loginError: string | null = null;
 
   constructor(private router: Router, private route: ActivatedRoute, private ngZone: NgZone) {
     this.route.queryParams.subscribe(params => {
@@ -20,50 +29,57 @@ export class LoginComponent implements AfterViewInit {
     });
   }
 
-  handleCredentialResponse(response: any) {
-    // Store the original Google credential as the token
-    sessionStorage.setItem('token', response.credential);
-    // Decode the JWT to get the email
+  async signInWithGoogle() {
+    this.loginError = null;
+    this.googleSigningIn = true;
+
     try {
-      const payload = JSON.parse(atob(response.credential.split('.')[1]));
-      if (payload && payload.email) {
-        sessionStorage.setItem('email', payload.email);
+      if (!getApps().length) initializeApp(environment.firebase);
+
+      const auth = getAuth();
+      await setPersistence(auth, browserLocalPersistence);
+
+      const provider = new GoogleAuthProvider();
+      // Needed for uploading PDFs to the user's Google Drive (no Firebase Storage billing).
+      provider.addScope('https://www.googleapis.com/auth/drive.file');
+
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const googleAccessToken = credential?.accessToken;
+      if (googleAccessToken) {
+        sessionStorage.setItem('googleAccessToken', googleAccessToken);
+      } else {
+        sessionStorage.removeItem('googleAccessToken');
       }
-    } catch (e) {
-      sessionStorage.removeItem('email');
-    }
-    this.ngZone.run(() => {
-      this.router.navigate(['/dashboard']);
-    });
-  }
 
-  onSubmit(event: Event) {
-    event.preventDefault();
-    // Store the entered username as email and as a dummy token
-    sessionStorage.setItem('token', this.username);
-    sessionStorage.setItem('email', this.username);
-    this.router.navigate(['/dashboard']);
-  }
+      const user = auth.currentUser;
+      const email = user?.email;
+      if (!user || !email) throw new Error('Firebase Auth did not return a user/email.');
 
-  ngAfterViewInit() {
-    fetch('assets/google-client-id.txt')
-      .then(res => res.text())
-      .then(clientId => {
-        this.googleClientId = clientId.trim();
-        this.renderGoogleSignInButton();
+      const idToken = await user.getIdToken();
+      sessionStorage.setItem('token', idToken);
+      sessionStorage.setItem('email', email);
+
+      this.ngZone.run(() => {
+        this.router.navigate(['/dashboard']);
       });
-  }
+    } catch (e: any) {
+      console.error('Firebase Auth sign-in failed:', e);
 
-  renderGoogleSignInButton() {
-    if ((window as any).google && this.googleClientId) {
-      (window as any).google.accounts.id.initialize({
-        client_id: this.googleClientId,
-        callback: (response: any) => this.handleCredentialResponse(response)
-      });
-      (window as any).google.accounts.id.renderButton(
-        document.getElementById('google-signin-btn'),
-        { theme: 'outline', size: 'large', width: 320 }
-      );
+      const code = String(e?.code ?? '');
+
+      if (code === 'auth/operation-not-allowed') {
+        this.loginError =
+          'Google sign-in is disabled in Firebase Authentication. Enable Google provider in Firebase Console → Authentication → Sign-in method.';
+      } else if (code === 'auth/popup-blocked') {
+        this.loginError = 'Popup was blocked by the browser. Allow popups for this site and try again.';
+      } else if (code === 'auth/popup-closed-by-user') {
+        this.loginError = 'Sign-in popup was closed before completing. Please try again.';
+      } else {
+        this.loginError = e?.message ? String(e.message) : 'Google sign-in failed for Firebase.';
+      }
+    } finally {
+      this.googleSigningIn = false;
     }
   }
 }

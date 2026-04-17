@@ -1,0 +1,96 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email != null;
+    }
+
+    function emailMatches(data) {
+      return isSignedIn() && data.email == request.auth.token.email;
+    }
+
+    function requestEmailMatches() {
+      return emailMatches(request.resource.data);
+    }
+
+    function resourceEmailMatches() {
+      return emailMatches(resource.data);
+    }
+
+    match /salaryRows/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /salaryPdfUploads/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /placementAssisted/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /technicalSupport/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /fixedInvestments/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /monthlyDebits/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /loanEntries/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /moneyMapCategories/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /vehicleProfiles/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /vehicleServiceSchedules/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /vehicleDocuments/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /vehicleDocumentUploads/{documentId} {
+      allow read, delete: if resourceEmailMatches();
+      allow create: if requestEmailMatches();
+      allow update: if resourceEmailMatches() && requestEmailMatches();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

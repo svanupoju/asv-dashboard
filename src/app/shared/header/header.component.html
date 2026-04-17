@@ -1,4 +1,4 @@
-<header class="navbar navbar-expand-lg navbar-dark bg-dark px-4 py-2 d-flex align-items-center justify-content-between w-100">
+<header class="navbar navbar-expand-lg navbar-dark bg-dark px-4 py-2 d-flex align-items-center w-100 app-header-shell">
   <div class="d-flex align-items-center sidebar-header-area flex-shrink-0 position-relative"
     [ngStyle]="sidebarCollapsed ? {'width':'60px','min-width':'60px'} : {'width':'250px','min-width':'250px'}">
     <div class="d-flex align-items-center w-100 justify-content-between">
@@ -19,7 +19,81 @@
       </button>
     </div>
   </div>
-  <div class="d-flex align-items-center gap-3">
+  <div class="header-global-filter" aria-label="Global month and year filter">
+    <div class="header-global-filter-controls">
+      <div #periodFilterRoot class="header-filter-dropdown header-filter-dropdown-wide" [class.is-open]="periodMenuOpen">
+        <button class="header-filter-trigger" type="button" (click)="togglePeriodMenu($event)" [attr.aria-expanded]="periodMenuOpen">
+          <span class="header-filter-trigger-prefix">Periods</span>
+          <span class="header-filter-trigger-value">{{ selectedPeriodsLabel }}</span>
+          <i class="fas fa-chevron-down header-filter-trigger-icon"></i>
+        </button>
+        <div class="header-filter-menu header-period-menu" *ngIf="periodMenuOpen">
+          <div class="header-period-menu-head">
+            <div>
+              <div class="header-period-menu-title">Pick Year Then Months</div>
+              <div class="header-period-menu-caption">Select one or more years, then choose months for the active year.</div>
+            </div>
+            <button class="header-filter-clear header-filter-clear-inline" type="button" (click)="clearAllSelections($event)">Clear All</button>
+          </div>
+
+          <div class="header-period-menu-grid">
+            <div class="header-period-years">
+              <div
+                class="header-period-year"
+                *ngFor="let year of years"
+                [class.is-selected]="isYearSelected(year)"
+                [class.is-active]="isYearActive(year)">
+                <button
+                  class="header-period-year-button"
+                  type="button"
+                  (click)="selectOrFocusYear(year, $event)">
+                  <span class="header-filter-check"></span>
+                  <span class="header-period-year-label">{{ year }}</span>
+                </button>
+                <button
+                  *ngIf="isYearSelected(year)"
+                  class="header-period-year-remove"
+                  type="button"
+                  (click)="removeYearSelection(year, $event)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="header-period-months">
+              <div class="header-period-months-head">
+                <div>
+                  <div class="header-period-months-title">{{ activeYear || 'No year selected' }}</div>
+                  <div class="header-period-months-caption">{{ activeYearMonthsLabel }}</div>
+                </div>
+                <button
+                  class="header-filter-clear header-filter-clear-inline"
+                  type="button"
+                  *ngIf="activeYear && isYearSelected(activeYear)"
+                  (click)="clearMonthsForActiveYear($event)">All Months</button>
+              </div>
+
+              <div class="header-period-month-grid" *ngIf="activeYear && isYearSelected(activeYear); else chooseYearState">
+                <button
+                  class="header-period-month"
+                  type="button"
+                  *ngFor="let month of months"
+                  [class.is-selected]="isMonthSelectedForActiveYear(month)"
+                  (click)="toggleMonthSelection(month, $event)">
+                  {{ month }}
+                </button>
+              </div>
+
+              <ng-template #chooseYearState>
+                <div class="header-period-empty-state">Choose a year first, then pick the exact months for that year.</div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex align-items-center gap-3 header-actions">
     <span *ngIf="userName" class="text-white fw-bold me-3">{{ capitalizeName(userName) }}</span>
     <button class="btn btn-dark position-relative">
       <i class="fas fa-bell"></i>

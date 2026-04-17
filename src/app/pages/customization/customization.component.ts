@@ -19,7 +19,9 @@ export class CustomizationComponent {
     return (
       key === 'salary-income' ||
       key === 'technical-support' ||
-      key === 'interview-assistance'
+      key === 'placement-assistance' ||
+      key === 'bike-tracking' ||
+      key === 'car-tracking'
     );
   }
 
@@ -74,11 +76,25 @@ export class CustomizationComponent {
         selectedSubmenus: ['Tickets', 'Live Chat', 'FAQ']
       },
       {
-        name: 'Interview Assistance',
-        key: 'interview-assistance',
-        submenus: ['Mock Interviews', 'Tips', 'Schedule'],
+        name: 'Placement Assistance',
+        key: 'placement-assistance',
+        submenus: ['Opportunities', 'Company Outreach', 'Offer Tracking'],
         selected: true,
-        selectedSubmenus: ['Mock Interviews', 'Tips', 'Schedule']
+        selectedSubmenus: ['Opportunities', 'Company Outreach', 'Offer Tracking']
+      },
+      {
+        name: 'Bike Tracking',
+        key: 'bike-tracking',
+        submenus: ['Fuel Tracking', 'Mileage'],
+        selected: true,
+        selectedSubmenus: ['Fuel Tracking', 'Mileage']
+      },
+      {
+        name: 'Car Tracking',
+        key: 'car-tracking',
+        submenus: ['Fuel Tracking', 'Mileage', 'Last Serviced', 'Next Service'],
+        selected: true,
+        selectedSubmenus: ['Fuel Tracking', 'Mileage', 'Last Serviced', 'Next Service']
       }
     ];
     if (savedMenus) {
@@ -87,7 +103,7 @@ export class CustomizationComponent {
         const found = parsed.find((m: any) => m.key === menu.key);
         return {
           ...menu,
-          selected: !!found
+          selected: found ? !!found : true
         };
       });
       // Add any custom menus from storage
@@ -144,7 +160,9 @@ export class CustomizationComponent {
       case 'dashboard': return 'fas fa-home';
       case 'salary-income': return 'fas fa-money-bill-wave';
       case 'technical-support': return 'fas fa-headset';
-      case 'interview-assistance': return 'fas fa-user-tie';
+      case 'placement-assistance': return 'fas fa-user-tie';
+      case 'bike-tracking': return 'fas fa-motorcycle';
+      case 'car-tracking': return 'fas fa-car-side';
       default: return 'fas fa-cog';
     }
   }

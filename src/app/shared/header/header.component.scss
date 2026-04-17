@@ -39,6 +39,10 @@
   height: 64px;
   transition: height 0.2s, min-height 0.2s;
 }
+
+.app-header-shell {
+  gap: 1rem;
+}
 .sidebar-header-area {
   height: 64px;
   min-height: 64px;
@@ -57,6 +61,330 @@
   letter-spacing: 1px;
 }
 
+.header-global-filter {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.header-global-filter-label {
+  color: #9bb0d9;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.header-global-filter-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.header-filter-dropdown {
+  position: relative;
+}
+
+.header-filter-dropdown-wide {
+  min-width: 20rem;
+}
+
+.header-filter-trigger {
+  min-width: 11.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.42rem 0.85rem;
+  border: 1px solid rgba(91, 197, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(13, 20, 38, 0.88);
+  color: #edf3ff;
+  box-shadow: none;
+  text-align: left;
+}
+
+.header-filter-trigger:focus,
+.header-filter-trigger:hover {
+  border-color: rgba(91, 197, 255, 0.44);
+  box-shadow: 0 0 0 0.14rem rgba(91, 197, 255, 0.16);
+}
+
+.header-filter-trigger-prefix {
+  color: #8fa3cf;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.header-filter-trigger-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.header-filter-trigger-icon {
+  color: #82d7ff;
+  font-size: 0.72rem;
+  transition: transform 0.18s ease;
+}
+
+.header-filter-dropdown.is-open .header-filter-trigger-icon {
+  transform: rotate(180deg);
+}
+
+.header-filter-menu {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  left: 0;
+  min-width: 100%;
+  max-height: 18rem;
+  overflow-y: auto;
+  padding: 0.45rem;
+  border: 1px solid rgba(91, 197, 255, 0.22);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(17, 25, 42, 0.98), rgba(12, 18, 33, 0.98));
+  box-shadow: 0 16px 34px rgba(4, 8, 18, 0.38);
+  z-index: 1080;
+}
+
+.header-period-menu {
+  width: min(42rem, calc(100vw - 2rem));
+  max-height: none;
+  overflow: hidden;
+}
+
+.header-period-menu-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+  padding: 0.2rem 0.15rem 0;
+}
+
+.header-period-menu-title {
+  color: #edf3ff;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.header-period-menu-caption {
+  margin-top: 0.15rem;
+  color: #8fa3cf;
+  font-size: 0.76rem;
+}
+
+.header-period-menu-grid {
+  display: grid;
+  grid-template-columns: minmax(10rem, 11.5rem) minmax(0, 1fr);
+  gap: 0.85rem;
+}
+
+.header-period-years,
+.header-period-months {
+  min-height: 14rem;
+  padding: 0.4rem;
+  border: 1px solid rgba(91, 197, 255, 0.12);
+  border-radius: 0.95rem;
+  background: rgba(8, 14, 27, 0.44);
+}
+
+.header-period-years {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: 18rem;
+  overflow-y: auto;
+}
+
+.header-period-year {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 0.8rem;
+}
+
+.header-period-year-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.7rem;
+  border: 0;
+  border-radius: 0.8rem;
+  background: transparent;
+  color: #dfe8ff;
+  text-align: left;
+}
+
+.header-period-year:hover,
+.header-period-year.is-active {
+  background: rgba(91, 197, 255, 0.08);
+}
+
+.header-period-year.is-selected {
+  background: rgba(0, 227, 150, 0.08);
+}
+
+.header-period-year.is-selected .header-filter-check {
+  border-color: #00e396;
+  background: linear-gradient(180deg, #00e396, #00b86f);
+}
+
+.header-period-year-label {
+  flex: 1 1 auto;
+}
+
+.header-period-year-remove {
+  width: 1.9rem;
+  height: 1.9rem;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.35rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #dfe8ff;
+}
+
+.header-period-year-remove:hover {
+  background: rgba(255, 93, 115, 0.18);
+  color: #fff;
+}
+
+.header-period-months {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.header-period-months-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.header-period-months-title {
+  color: #edf3ff;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.header-period-months-caption {
+  margin-top: 0.15rem;
+  color: #8fa3cf;
+  font-size: 0.76rem;
+}
+
+.header-period-month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.header-period-month {
+  padding: 0.65rem 0.7rem;
+  border: 1px solid rgba(91, 197, 255, 0.15);
+  border-radius: 0.8rem;
+  background: rgba(13, 20, 38, 0.65);
+  color: #dfe8ff;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.header-period-month:hover {
+  border-color: rgba(91, 197, 255, 0.34);
+  background: rgba(91, 197, 255, 0.1);
+}
+
+.header-period-month.is-selected {
+  border-color: rgba(0, 227, 150, 0.38);
+  background: rgba(0, 227, 150, 0.12);
+  color: #f7fffb;
+}
+
+.header-period-empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-height: 8rem;
+  padding: 1rem;
+  border: 1px dashed rgba(143, 163, 207, 0.22);
+  border-radius: 0.9rem;
+  color: #8fa3cf;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.header-filter-clear,
+.header-filter-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.7rem;
+  border: 0;
+  border-radius: 0.8rem;
+  background: transparent;
+  color: #dfe8ff;
+  text-align: left;
+}
+
+.header-filter-clear {
+  margin-bottom: 0.3rem;
+  color: #82d7ff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.header-filter-clear-inline {
+  width: auto;
+  margin-bottom: 0;
+  padding: 0.35rem 0.55rem;
+  flex: 0 0 auto;
+}
+
+.header-filter-clear:hover,
+.header-filter-option:hover {
+  background: rgba(91, 197, 255, 0.1);
+}
+
+.header-filter-option.is-selected {
+  background: rgba(0, 227, 150, 0.1);
+}
+
+.header-filter-check {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex: 0 0 auto;
+  border: 1px solid rgba(143, 163, 207, 0.42);
+  border-radius: 0.3rem;
+  background: rgba(13, 20, 38, 0.72);
+}
+
+.header-filter-option.is-selected .header-filter-check {
+  border-color: #00e396;
+  background: linear-gradient(180deg, #00e396, #00b86f);
+}
+
+.header-actions {
+  flex: 0 0 auto;
+}
+
 .btn-dark {
   color: #f8f9fa;
   background: none;
@@ -70,4 +398,59 @@
 
 .badge.bg-danger {
   font-size: 0.7rem;
+}
+
+@media (max-width: 991.98px) {
+  .app-header-shell {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 64px;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  .header-global-filter {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    padding-left: 0.25rem;
+  }
+
+  .header-global-filter-controls {
+    flex-wrap: wrap;
+  }
+
+  .header-period-menu {
+    width: min(42rem, calc(100vw - 3rem));
+  }
+}
+
+@media (max-width: 767.98px) {
+  .header-global-filter {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .header-global-filter-controls {
+    width: 100%;
+  }
+
+  .header-filter-dropdown,
+  .header-filter-trigger {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .header-filter-menu {
+    width: 100%;
+  }
+
+  .header-period-menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header-period-month-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
